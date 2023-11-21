@@ -1,0 +1,50 @@
+Category,Company,Ticker
+Gaming and Entertainment,Electronic Arts Inc.,EA
+Gaming and Entertainment,"Take-Two Interactive Software, Inc.",TTWO
+Gaming and Entertainment,Inspired Entertainment Inc.,INSE
+Gaming and Entertainment,"Nintendo Co., Ltd.",NTDOY
+Gaming and Entertainment,Sony Group Corporation,SONY
+Gaming and Entertainment,Ubisoft Entertainment SA,UBSFY
+Gaming and Entertainment,"Nexon Co., Ltd.",NEXOF
+Gaming and Entertainment,"NetEase, Inc.",NTES
+Gaming and Entertainment,Sea Limited,SE
+Gaming and Entertainment,"Square Enix Holdings Co., Ltd.",SQNXF
+Technology and Software,Adobe Inc.,ADBE
+Technology and Software,Salesforce.com Inc.,CRM
+Technology and Software,Oracle Corporation,ORCL
+Technology and Software,SAP SE,SAP
+Technology and Software,Intuit Inc.,INTU
+Technology and Software,"ServiceNow, Inc.",NOW
+Technology and Software,"Workday, Inc.",WDAY
+Technology and Software,"Autodesk, Inc.",ADSK
+Technology and Software,"DocuSign, Inc.",DOCU
+Technology and Software,Atlassian Corporation Plc,TEAM
+E-commerce and Retail,Amazon.com Inc.,AMZN
+E-commerce and Retail,Alibaba Group Holding Limited,BABA
+E-commerce and Retail,eBay Inc.,EBAY
+E-commerce and Retail,Shopify Inc.,SHOP
+E-commerce and Retail,Walmart Inc.,WMT
+E-commerce and Retail,Target Corporation,TGT
+E-commerce and Retail,"JD.com, Inc.",JD
+E-commerce and Retail,"MercadoLibre, Inc.",MELI
+E-commerce and Retail,"Etsy, Inc.",ETSY
+E-commerce and Retail,Wayfair Inc.,W
+Communication and Social Media,"Facebook, Inc.",META
+Communication and Social Media,"Pinterest, Inc.",PINS
+Communication and Social Media,Snap Inc.,SNAP
+Communication and Social Media,Tencent Holdings Limited,TCEHY
+Communication and Social Media,Weibo Corporation,WB
+Communication and Social Media,Alphabet Inc. Class A,GOOGL
+Communication and Social Media,"Baidu, Inc.",BIDU
+Communication and Social Media,"Match Group, Inc",MTCH
+Communication and Social Media,Alibaba Group Holding Limited,BABA
+Communication and Social Media,Apple Inc.,AAPL
+Hardware and Technology Services,Intel Corporation,INTC
+Hardware and Technology Services,NVIDIA Corporation,NVDA
+Hardware and Technology Services,"Advanced Micro Devices, Inc.",AMD
+Hardware and Technology Services,"Cisco Systems, Inc.",CSCO
+Hardware and Technology Services,Hewlett Packard Enterprise Company,HPE
+Hardware and Technology Services,Dell Technologies Inc.,DELL
+Hardware and Technology Services,Lenovo Group Limited,LNVGY
+Hardware and Technology Services,Seagate Technology Holdings plc,STX
+Hardware and Technology Services,Western Digital Corporation,WDC
