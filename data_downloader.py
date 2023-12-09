@@ -1,5 +1,5 @@
 from typing import List, Dict
-from models import Category, Company, DailyData
+from models import Category, Company, DailyData, MinuteData
 from database_helper import DatabaseHelper
 
 import yfinance as yf
@@ -66,7 +66,7 @@ class DataDownloader:
             category = self.__db_helper.get_category_object_by_name(category_name)
             if category is None:
                 self.__db_helper.insert_category(category_name)
-                category = self.__db_helper.get_category_object(category_name)
+                category = self.__db_helper.get_category_object_by_name(category_name)
             
             logging.info(f"Processing {category_name}")
             for stock in stock_list:
@@ -87,9 +87,6 @@ class DataDownloader:
                     # Add a symbol column
                     df["Ticker"] = ticker
 
-                    # Drop Adj Close column
-                    df.drop("Adj Close", axis=1, inplace=True)
-                    
                     # Create a list of DailyData objects
                     # and insert them into the database
                     daily_data_list = []
@@ -103,6 +100,7 @@ class DataDownloader:
                             high=row["High"], 
                             low=row["Low"], 
                             close=row["Close"], 
+                            adjust_close=row["Adj Close"],
                             volume=row["Volume"]
                         ))
                     

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import sessionmaker
-from models import Category, Company, DailyData, Base
+from models import Category, Company, DailyData, Base, MinuteData
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 from typing import Dict
@@ -11,6 +11,10 @@ class DatabaseHelper:
     def __init__(self, db_path: str) -> None:
         self.__db_path = db_path
         self.__session = None
+        
+    @property
+    def get_session(self):
+        return self.__session
         
     def connect(self):
         engine = create_engine(f"sqlite+pysqlite:///{self.__db_path}")
@@ -52,7 +56,6 @@ class DatabaseHelper:
     def get_category_object_by_id(self, category_id: int) -> Category:
         return self.__session.query(Category).filter(Category.id == category_id).first()
     
-  
     def get_daily_market_data(self, ticker: str, start_date: str = "", end_date: str = "") -> pd.DataFrame:
         if start_date == "" and end_date == "":
             data = self.__session.query(DailyData).filter(DailyData.ticker == ticker).all()
@@ -84,3 +87,15 @@ class DatabaseHelper:
             stocks_dict[ticker] = data
         
         return stocks_dict
+    
+    def get_daily_data_by_ticker(self, ticker: str, start_date: str = "", end_date: str = "") -> pd.DataFrame:
+        if start_date == "" and end_date == "":
+            data = self.__session.query(DailyData).filter(DailyData.ticker == ticker).all()
+        elif start_date != "" and end_date == "":
+            data = self.__session.query(DailyData).filter(DailyData.ticker == ticker, DailyData.date >= start_date).all()
+        elif start_date == "" and end_date != "":
+            data = self.__session.query(DailyData).filter(DailyData.ticker == ticker, DailyData.date <= end_date).all()
+        else:
+            data = self.__session.query(DailyData).filter(DailyData.ticker == ticker, DailyData.date >= start_date, DailyData.date <= end_date).all()
+
+        return pd.DataFrame([row.__dict__ for row in data]).drop(["_sa_instance_state"], axis=1).sort_values(by="date")

@@ -30,17 +30,24 @@ class DailyData(Base):
     high = Column(Float)
     low = Column(Float)
     close = Column(Float)
+    adjust_close = Column(Float)
     volume = Column(Integer)
     
     category = relationship("Category")
     company = relationship("Company")
     
+class MinuteData(Base):
+    __tablename__ = 'minute_data'
+
+    category_id = Column(Integer, ForeignKey("category.id"), primary_key=True)
+    ticker = Column(String, ForeignKey("company.ticker"), primary_key=True)
+    date = Column(Date, primary_key=True)
+    open = Column(Float)
+    high = Column(Float)
+    low = Column(Float)
+    close = Column(Float)
+    adjust_close = Column(Float)
+    volume = Column(Integer)
     
-engine = create_engine(f"sqlite+pysqlite:///marketdata.db")
-conn = engine.connect()
-Session = sessionmaker(bind=engine)
-session = Session()
-
-session.add(Category(name="Technology", id=1))
-
-session.commit()
+    category = relationship("Category")
+    company = relationship("Company")
