@@ -1,5 +1,5 @@
 from sqlalchemy.orm import sessionmaker
-from models import Category, Company, DailyData, Base, MinuteData
+from models import Category, Company, DailyData, Base
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 from typing import Dict

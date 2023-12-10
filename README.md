@@ -3,7 +3,8 @@
 ## 1. Quantitative Modelling 
 ### Usage
 Run `pip install -r requirements.txt` to install the required packages.
-Run the script step by step using `analysis.ipynb`.
+Run `python -m unittrst tests/test_database_helper.py` to test the database helper.
+Run the script step by step using `analysis.ipynb` for analysis and quantitive modelling results.
 
 ## 2. Sentiment analysis
 
