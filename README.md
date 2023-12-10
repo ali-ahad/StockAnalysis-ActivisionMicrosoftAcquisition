@@ -2,7 +2,8 @@
 
 ## 1. Quantitative Modelling 
 ### Usage
-Run the script using `analysis.ipynb`.
+Run `pip install -r requirements.txt` to install the required packages.
+Run the script step by step using `analysis.ipynb`.
 
 ## 2. Sentiment analysis
 
