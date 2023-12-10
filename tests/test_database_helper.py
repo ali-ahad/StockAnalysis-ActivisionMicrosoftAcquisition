@@ -1,14 +1,16 @@
-import unittest
-from models import Company, DailyData, Base
+from models import Company, DailyData, Base, Category
 from sqlalchemy import create_engine
-import pandas as pd
 from database_helper import DatabaseHelper
 from datetime import datetime
+
+import pandas as pd
+import os
+import unittest
 
 class DatabaseHelperTests(unittest.TestCase):
   def setUp(self):
     # Set up a test database
-    self.db_path = "test.db"
+    self.db_path = "tests/test.db"
     self.db_helper = DatabaseHelper(self.db_path)
     self.db_helper.connect()
 
@@ -17,6 +19,9 @@ class DatabaseHelperTests(unittest.TestCase):
     self.db_helper.get_session.close()
     engine = create_engine(f"sqlite+pysqlite:///{self.db_path}")
     Base.metadata.drop_all(engine)
+    
+    # Delete the test database
+    os.remove(self.db_path)
 
   def test_insert_category(self):
     # Test inserting a single category
@@ -67,7 +72,33 @@ class DatabaseHelperTests(unittest.TestCase):
         {"date": datetime.strptime(start_date, "%Y-%m-%d").date(), "high": 10.0, "close": 10.0, "volume": 10.0, 
         "ticker": "TEST", "category_id": 1, "open": 10.0, "low": 10.0, "adjust_close": 10.2},
     ])
-    pd.testing.assert_frame_equal(data, expected_data, check_exact=False, check_dtype=False)
+    
+    pd.testing.assert_series_equal(data["date"], expected_data["date"], check_dtype=False)
+    pd.testing.assert_series_equal(data["high"], expected_data["high"], check_dtype=False)
+    pd.testing.assert_series_equal(data["close"], expected_data["close"], check_dtype=False)
+    pd.testing.assert_series_equal(data["volume"], expected_data["volume"], check_dtype=False)
+    pd.testing.assert_series_equal(data["ticker"], expected_data["ticker"], check_dtype=False)
+    pd.testing.assert_series_equal(data["category_id"], expected_data["category_id"], check_dtype=False)
+    pd.testing.assert_series_equal(data["open"], expected_data["open"], check_dtype=False)
+    pd.testing.assert_series_equal(data["low"], expected_data["low"], check_dtype=False)
+    pd.testing.assert_series_equal(data["adjust_close"], expected_data["adjust_close"], check_dtype=False)
 
+  def test_get_category_object_by_name(self):
+      # Test case 1: Category with the given name exists
+      category_name = "Example Category"
+      
+      # Insert the category into the database
+      self.db_helper.insert_category(category_name)
+
+      # Retrieve the category object
+      expected_category = Category(name=category_name)
+      actual_category = self.db_helper.get_category_object_by_name(category_name)
+      self.assertEqual(actual_category.name, expected_category.name)
+
+      # Test case 2: Category with the given name does not exist
+      category_name = "Nonexistent Category"
+      actual_category = self.db_helper.get_category_object_by_name(category_name)
+      self.assertIsNone(actual_category)
+  
 if __name__ == "__main__":
     unittest.main()
