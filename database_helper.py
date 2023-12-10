@@ -7,6 +7,9 @@ from typing import Dict
 import logging
 import pandas as pd
 
+# DatabaseHelper class
+# This class is used to interact with the database
+# It contains methods to insert data into the database and retrieve data from the database
 class DatabaseHelper:
     def __init__(self, db_path: str) -> None:
         self.__db_path = db_path
@@ -16,6 +19,7 @@ class DatabaseHelper:
     def get_session(self):
         return self.__session
         
+    # Connect to the database
     def connect(self):
         engine = create_engine(f"sqlite+pysqlite:///{self.__db_path}")
         engine.connect()
@@ -25,17 +29,20 @@ class DatabaseHelper:
         
         Base.metadata.create_all(engine)
 
+    # Insert categories into the database
     def insert_categories(self, category_list: str):
         for category in category_list:
             logging.info(f"Adding {category} to the database")
             self.__session.add(Category(name=category))
         self.__session.commit()
-        
+    
+    # Insert a single category into the database
     def insert_category(self, category_name: str):
         logging.info(f"Adding {category_name} to the database")
         self.__session.add(Category(name=category_name))
         self.__session.commit()
-        
+    
+    # Insert a single company into the database
     def insert_company(self, ticker: str, name: str):
         try:        
             logging.info(f"Adding {ticker} - {name} to the database")
@@ -44,18 +51,22 @@ class DatabaseHelper:
         except IntegrityError as e:
             logging.error(f"Error while adding {ticker} - {name} to the database: {e._message()}")
             self.__session.rollback()
-        
+    
+    # Insert a list of DailyData objects into the database   
     def insert_daily_data_list(self, daily_data_list: list, ticker: str):
         logging.info(f"Adding {len(daily_data_list)} daily data records for {ticker} to the database")
         self.__session.add_all(daily_data_list)
         self.__session.commit()
     
+    # Get a category object by name
     def get_category_object_by_name(self, category_name: str) -> Category:
         return self.__session.query(Category).filter(Category.name == category_name).first()
     
+    # Get a category object by id
     def get_category_object_by_id(self, category_id: int) -> Category:
         return self.__session.query(Category).filter(Category.id == category_id).first()
     
+    # Get daily market data for a ticker
     def get_daily_market_data(self, ticker: str, start_date: str = "", end_date: str = "") -> pd.DataFrame:
         if start_date == "" and end_date == "":
             data = self.__session.query(DailyData).filter(DailyData.ticker == ticker).all()
@@ -68,10 +79,12 @@ class DatabaseHelper:
 
         return pd.DataFrame([row.__dict__ for row in data]).drop(["_sa_instance_state"], axis=1).sort_values(by="date") 
 
+    # Get all categories
     def get_categories(self) -> pd.DataFrame:
         data = self.__session.query(Category).all()
         return pd.DataFrame([row.__dict__ for row in data]).drop(["_sa_instance_state"], axis=1).sort_values(by="name")
     
+    # Get stocks by category id
     def get_stocks_by_category_id(self, category_id: int) -> Dict[str, pd.DataFrame]:
         data = self.__session.query(DailyData).filter(DailyData.category_id == category_id).all()
         
@@ -88,6 +101,7 @@ class DatabaseHelper:
         
         return stocks_dict
     
+    # Get daily data by ticker
     def get_daily_data_by_ticker(self, ticker: str, start_date: str = "", end_date: str = "") -> pd.DataFrame:
         if start_date == "" and end_date == "":
             data = self.__session.query(DailyData).filter(DailyData.ticker == ticker).all()
